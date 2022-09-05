@@ -8,5 +8,5 @@ import lombok.RequiredArgsConstructor;
 public abstract class Command {
     protected final Context context;
 
-    abstract public List<String> execute(List<String> args);
+    public abstract List<String> execute(List<String> args);
 }

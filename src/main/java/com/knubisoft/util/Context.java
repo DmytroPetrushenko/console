@@ -1,11 +1,10 @@
 package com.knubisoft.util;
 
 import com.knubisoft.command.Command;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.File;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

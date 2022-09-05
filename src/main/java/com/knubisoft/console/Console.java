@@ -3,7 +3,6 @@ package com.knubisoft.console;
 import com.knubisoft.command.Command;
 import com.knubisoft.util.Context;
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -14,6 +13,8 @@ import org.reflections.scanners.Scanners;
 
 public class Console {
     private final Context context = new Context();
+
+    @SneakyThrows
     public void launchConsole() {
         context.setCurrentDirectory(new File(System.getenv("PWD")));
         Map<String, Command> commands = getCommands();
@@ -31,15 +32,16 @@ public class Console {
                 System.out.println("This command is absent! Use command \"help\"!");
                 continue;
             }
-            currentCommand.execute(nextLine.subList(1, nextLine.size()))
-                    .forEach(System.out::print);
+            List<String> strings = currentCommand.execute(nextLine.subList(1, nextLine.size()));
+            strings.forEach(System.out::print);
         }
     }
 
     private Map<String, Command> getCommands() {
         Reflections reflections = new Reflections("com.knubisoft", Scanners.SubTypes);
         return reflections.getSubTypesOf(Command.class).stream()
-                .collect(Collectors.toMap(clazz -> clazz.getSimpleName().toLowerCase(), this::getInstance));
+                .collect(Collectors.toMap(clazz -> clazz.getSimpleName().toLowerCase(),
+                        this::getInstance));
     }
 
     @SneakyThrows
