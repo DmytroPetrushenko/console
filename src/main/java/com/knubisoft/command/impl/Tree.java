@@ -9,6 +9,9 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class Tree extends Command {
+    private static final String SUFFIX = "+--";
+    private static final String ROW_END = "\n";
+    private static final String PREFIX = "|  ";
     private final List<String> treeList = new ArrayList<>();
     private int limit = Integer.MAX_VALUE;
 
@@ -44,16 +47,16 @@ public class Tree extends Command {
 
     private String getPrefix(int level) {
         StringBuilder builder = new StringBuilder();
-        IntStream.range(0, level).forEach((x) -> builder.append("|  "));
+        IntStream.range(0, level).forEach((x) -> builder.append(PREFIX));
         return builder.toString();
     }
 
     private void createRowTree(File currentDirectory, int level) {
         StringBuilder builder = new StringBuilder();
         builder.append(getPrefix(level));
-        builder.append("+--");
+        builder.append(SUFFIX);
         builder.append(currentDirectory.getName());
-        builder.append("\n");
+        builder.append(ROW_END);
         treeList.add(builder.toString());
     }
 }
