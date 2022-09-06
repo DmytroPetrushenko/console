@@ -1,9 +1,9 @@
 package com.knubisoft.ls.impl;
 
-import com.knubisoft.ls.FileStrategy;
+import com.knubisoft.ls.Strategy;
 import java.io.File;
 
-public class Write implements FileStrategy {
+public class Write implements Strategy {
 
     @Override
     public String getValue(File file) {

@@ -2,6 +2,7 @@ package com.knubisoft.console;
 
 import com.knubisoft.command.Command;
 import com.knubisoft.util.Context;
+import com.knubisoft.util.ScannerUtil;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +20,7 @@ public class Console {
         context.setCurrentDirectory(new File(System.getenv("PWD")));
         Map<String, Command> commands = getCommands();
         context.setCommands(commands);
-
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = ScannerUtil.getScanner();
         while (true) {
             List<String> nextLine = List.of(scanner.nextLine().split(" "));
             String commandName = nextLine.get(0);

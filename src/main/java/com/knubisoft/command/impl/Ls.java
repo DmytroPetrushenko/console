@@ -1,7 +1,7 @@
 package com.knubisoft.command.impl;
 
 import com.knubisoft.command.Command;
-import com.knubisoft.ls.FileStrategy;
+import com.knubisoft.ls.Strategy;
 import com.knubisoft.util.Context;
 import java.io.File;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import org.reflections.scanners.Scanners;
 public class Ls extends Command {
     private static final String PACKAGE = "com.knubisoft";
     private static final String NAME = "name";
-    private List<FileStrategy> columns;
+    private List<Strategy> columns;
     private Map<String, Integer> maxLengthValues;
 
     public Ls(Context context) {
@@ -74,16 +74,16 @@ public class Ls extends Command {
                 .collect(Collectors.toList());
     }
 
-    private List<FileStrategy> getColumns(List<String> columnsNames) {
+    private List<Strategy> getColumns(List<String> columnsNames) {
         Reflections reflections = new Reflections(PACKAGE, Scanners.SubTypes);
-        List<FileStrategy> strategies = reflections.getSubTypesOf(FileStrategy.class).stream()
+        List<Strategy> strategies = reflections.getSubTypesOf(Strategy.class).stream()
                 .map(this::createInstance)
                 .collect(Collectors.toList());
         return columnsNames.isEmpty() ? strategies : chooseStrategies(strategies, columnsNames);
     }
 
-    private List<FileStrategy> chooseStrategies(List<FileStrategy> strategies,
-                                                List<String> columnsNames) {
+    private List<Strategy> chooseStrategies(List<Strategy> strategies,
+                                            List<String> columnsNames) {
         TreeSet<String> tree = new TreeSet<>(columnsNames);
         tree.add(NAME);
         return strategies.stream()
@@ -101,7 +101,7 @@ public class Ls extends Command {
                         column -> getMaxColumns(column, files)));
     }
 
-    private Integer getMaxColumns(FileStrategy column, File[] files) {
+    private Integer getMaxColumns(Strategy column, File[] files) {
         return Arrays.stream(files)
                 .map(file -> column.getValue(file).length())
                 .max(Comparator.naturalOrder())
